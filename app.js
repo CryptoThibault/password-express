@@ -33,7 +33,7 @@ app.get('/', async (req, res) => {
   res.send(`Welcome to your local server at PORT ${PORT}`)
 });
 
-app.get('/register/:username/:password', async (req, res) => {
+app.post('/register/:username/:password', async (req, res) => {
   if (!userChecker(req.params.username)) {
     const log = `"${req.params.username}": ${ethers.utils.keccak256(req.params.password)}`
     await fsPromises.appendFile(LOG_FILE, JSON.stringify(log), FORMAT_FILE)
@@ -43,7 +43,7 @@ app.get('/register/:username/:password', async (req, res) => {
   }
 });
 
-app.get('/login/:username/:password', async (req, res) => {
+app.post('/login/:username/:password', async (req, res) => {
   const log = JSON.parse(await fsPromises.readFile(LOG_FILE, FORMAT_FILE))
   if (userChecker(req) && passwordChecker(req)) {
     res.send(`Welcome to your dahsboard ${req.params.username}`)
